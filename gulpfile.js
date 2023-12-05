@@ -3,11 +3,15 @@ const { src, dest, watch, series, parallel } = require('gulp');
 
 // CSS Y SASS
 const sass = require('gulp-sass')(require('sass'));
+
+// CSS de última generación para navegadores inconpatibles, package.json
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 
 // IMAGENES
 const imagemin = require('gulp-imagemin');
+const webp = require('gulp-webp');
+const avif = require('gulp-avif');
 
 function css(done) {
     // compilar sass
@@ -27,13 +31,33 @@ function imagenes() {
                 .pipe(imagemin({optimizationLevel: 3}))
                 .pipe(dest('build/img'));
 }
+function versionWebp() {
+    const opciones = {
+        quality: 50
+    }
+    return  src('src/img/**/*.{png,jpg}')
+            .pipe( webp(opciones) )
+            .pipe( dest('build/img') );
+}
+function versionAvif() {
+    const opciones = {
+        quality: 50
+    }
+    return  src('src/img/**/*.{png,jpg}')
+            .pipe( avif( opciones ) )
+            .pipe( dest('build/img') );
+}
 
 // Posible error: npm install --save-dev gulp-imagemin@7.1.0
 
 exports.css = css;
 exports.watch = dev;
-exports.default = series(imagenes, css, dev);
+exports.versionWebp = versionWebp;
+exports.versionAvif = versionAvif;
+exports.default = series(imagenes, versionWebp, versionAvif, css, dev);
 exports.imagenes = imagenes;
 
 // series - Se inicia una tarea y hasta que finaliza, inicia la siguiente.
 // parallel - Todas las tareas inician al mismo tiempo.
+
+
