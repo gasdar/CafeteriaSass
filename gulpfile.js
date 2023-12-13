@@ -3,10 +3,12 @@ const { src, dest, watch, series, parallel } = require('gulp');
 
 // CSS Y SASS
 const sass = require('gulp-sass')(require('sass'));
+const sourcemaps = require('gulp-sourcemaps');
 
 // CSS de última generación para navegadores inconpatibles, package.json
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 
 // IMAGENES
 const imagemin = require('gulp-imagemin');
@@ -17,8 +19,10 @@ function css(done) {
     // compilar sass
     // pasos| 1 - identificar archivo, 2 - compilar, 3 - guardarla en .css
     src('src/scss/app.scss')
+        .pipe( sourcemaps.init() )
         .pipe(sass())
-        .pipe(postcss([ autoprefixer() ]))
+        .pipe(postcss([ autoprefixer(), cssnano() ]))
+        .pipe( sourcemaps.write('.') )
         .pipe(dest('build/css'));
     done();
 }

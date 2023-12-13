@@ -1,0 +1,73 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+@include m.tablet {
+    .notavif.notwebp .contenido-contacto {
+        background-image: url('../img/granos_cafe.jpg');
+    }
+    .webp .contenido-contacto {
+        background-image: url('../img/granos_cafe.webp');
+    }
+    .avif .contenido-contacto {
+        background-image: url('../img/granos_cafe.avif');
+    }
+}
+
+.contenido-contacto {
+
+    @include m.tablet {
+        @include m.grid(2, v.$separacion);
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: 40%;
+    }
+
+    @include m.desktop {
+        background-size: 34%;
+    }
+
+}
+
+.formulario {
+
+    .campo {
+        margin-bottom: 2rem;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: .5rem;
+        }
+        input:not([type="submit"]),
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 0.2rem solid v.$primario;
+        }
+        input[type="submit"] {
+            background-color: v.$primario;
+            color: v.$blanco;
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            width: 100%;
+            border: none;
+            padding: 1rem;
+            transition-property: background-color color;
+            transition-duration: 300ms;
+
+            &:hover {
+                background-color: v.$secundario;
+                color: v.$primario;
+                cursor: pointer;
+            }
+        }
+    }
+
+}
